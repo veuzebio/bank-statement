@@ -1,28 +1,13 @@
-import { useState } from "react";
+import { NextPage } from 'next';
 
-function Home() {
-    return (
-        <div>
-            <Statement/>
-        </div>
-    )
-}
+import TransactionForm from '../components/transaction-form';
 
-function Statement() {
-    const [account, setAccount] = useState(0);
-    const [inputValue, setInputValue] = useState("");
-
-    function setStatementValue() {
-        setAccount(account + Number(inputValue));
-    }
-
-    return (
-        <div>
-            <input type="text" value={inputValue} onChange={e => setInputValue(e.target.value)}/>
-            <button type="button" onClick={setStatementValue}>Deposit</button>
-            <h1>{account}</h1>
-        </div>
-    )
-}
+const Home: NextPage = () => {
+  return (
+    <div>
+      <TransactionForm />
+    </div>
+  );
+};
 
 export default Home;
