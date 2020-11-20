@@ -10,7 +10,7 @@ const TransactionForm: NextPage = () => {
   }
 
   return (
-    <div>
+    <>
       <input
         type="text"
         value={inputValue}
@@ -20,7 +20,7 @@ const TransactionForm: NextPage = () => {
         Deposit
       </button>
       <h1>{totalAmount}</h1>
-    </div>
+    </>
   );
 };
 

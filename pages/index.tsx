@@ -1,12 +1,26 @@
 import { NextPage } from 'next';
-
-import TransactionForm from '../components/transaction-form';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const Home: NextPage = () => {
+  const [session, loading] = useSession();
+
   return (
-    <div>
-      <TransactionForm />
-    </div>
+    <>
+      {loading && <h1>LOADING...</h1>}
+      {!session && (
+        <div>
+          <button onClick={(): Promise<void> => signIn('auth0')}>
+            Sign in
+          </button>
+        </div>
+      )}
+      {session && (
+        <div>
+          Signed in as {session.user.email} <br />
+          <button onClick={(): Promise<void> => signOut()}>Sign out</button>
+        </div>
+      )}
+    </>
   );
 };
 
