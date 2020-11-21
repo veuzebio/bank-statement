@@ -7,7 +7,7 @@ interface ValidateResponse {
 
 export function validate(payload: CreateAccountPayload): ValidateResponse {
   const messages: string[] = [];
-  const { name, age, initialAmount } = payload;
+  const { name, age } = payload;
 
   if (!name) {
     messages.push('Parameter NAME is not correct');
