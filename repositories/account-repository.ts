@@ -1,7 +1,7 @@
 import { ObjectId, WithId } from 'mongodb';
 import { CreateAccountPayload, Account } from '../interfaces/models';
 
-import connect from './utils/database';
+import connect from '../utils/database';
 
 const ACCOUNTS_COLLECTION = 'accounts';
 
@@ -12,19 +12,19 @@ export async function createAccount(
 
   const response = await db.collection<Account>(ACCOUNTS_COLLECTION).insertOne({
     name: payload.name,
-    age: payload.age,
+    email: payload.email,
     amount: payload.initialAmount ?? 0,
   });
 
   return response.ops[0];
 }
 
-export async function findAccountByName(name: string): Promise<Account> {
+export async function findAccountByEmail(email: string): Promise<Account> {
   const { db } = await connect();
 
   const response = await db
     .collection<Account>(ACCOUNTS_COLLECTION)
-    .findOne({ name });
+    .findOne({ email: email });
 
   return response;
 }

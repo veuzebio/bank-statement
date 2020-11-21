@@ -1,5 +1,5 @@
 export interface CreateAccountPayload {
   name: string;
-  age: number;
+  email: string;
   initialAmount?: number;
 }

@@ -2,20 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 
 import * as fromRepository from '../../../repositories/account-repository';
-import {
-  ErrorApiResponse,
-  SuccessApiResponse,
-} from '../../../interfaces/api-responses';
+import { Account } from '../../../interfaces/models';
 
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<SuccessApiResponse | ErrorApiResponse>
+  res: NextApiResponse<Account | { error: string }>
 ): Promise<void> => {
-  await authValidate(req, res);
+  //await authValidate(req, res);
 
   switch (req.method) {
     case 'GET':
-      await findAccountByName(req, res);
+      await findAccountByEmail(req, res);
       break;
 
     default:
@@ -39,31 +36,31 @@ async function authValidate(
   }
 }
 
-async function findAccountByName(
+async function findAccountByEmail(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessApiResponse | ErrorApiResponse>
+  res: NextApiResponse<Account | { error: string }>
 ): Promise<void> {
   const {
-    query: { name },
+    query: { email },
   } = req;
 
-  if (!name) {
+  if (!email) {
     res.status(400).json({
-      error: `Missing Account Name`,
-    } as ErrorApiResponse);
+      error: `Missing EMAIL param`,
+    });
 
     return;
   }
 
-  const account = await fromRepository.findAccountByName(name as string);
+  const account = await fromRepository.findAccountByEmail(email as string);
 
   if (!account) {
     res.status(404).json({
       error: `Account not found`,
-    } as ErrorApiResponse);
+    });
 
     return;
   }
 
-  res.status(200).json({ data: account });
+  res.status(200).json(account);
 }

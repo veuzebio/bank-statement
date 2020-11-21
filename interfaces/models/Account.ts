@@ -1,5 +1,5 @@
 export interface Account {
   name: string;
-  age: number;
+  email: string;
   amount: number;
 }

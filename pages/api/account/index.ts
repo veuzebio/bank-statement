@@ -2,18 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 
 import * as fromRepository from '../../../repositories/account-repository';
-import * as fromValidator from '../../../validations/account-validator';
+import * as fromValidator from '../../../utils/validations/account-validator';
 import { CreateAccountPayload } from '../../../interfaces/models';
-import {
-  ErrorApiResponse,
-  SuccessApiResponse,
-} from '../../../interfaces/api-responses';
+import { Account } from '../../../interfaces/models';
 
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<SuccessApiResponse | ErrorApiResponse>
+  res: NextApiResponse<Account | { error: string }>
 ): Promise<void> => {
-  await authValidate(req, res);
+  //await authValidate(req, res);
 
   switch (req.method) {
     case 'POST':
@@ -43,11 +40,11 @@ async function authValidate(
 
 async function createNewAccount(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessApiResponse | ErrorApiResponse>
+  res: NextApiResponse<Account | { error: string }>
 ): Promise<void> {
   const createAccountPayload: CreateAccountPayload = {
     name: req.body.name,
-    age: req.body.age,
+    email: req.body.email,
     initialAmount: req.body.initialAmount,
   };
 
@@ -56,11 +53,11 @@ async function createNewAccount(
   if (!payloadValidation.isValid) {
     res.status(400).json({
       error: payloadValidation.messages.join(', '),
-    } as ErrorApiResponse);
+    });
 
     return;
   }
 
   const newAccount = await fromRepository.createAccount(createAccountPayload);
-  res.status(200).json({ data: newAccount } as SuccessApiResponse);
+  res.status(200).json(newAccount);
 }
