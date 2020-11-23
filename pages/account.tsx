@@ -1,29 +1,26 @@
 import { NextPage } from 'next';
-import { useSession } from 'next-auth/client';
 
 import CreateAccount from '../components/create-account';
-import { useFetch } from '../utils/hooks/useFetch';
-import { Account } from '../interfaces/models';
+import { useAuth } from '../utils/contexts/auth-context';
 
 const AccountPage: NextPage = () => {
-  const [session] = useSession();
-  const { data, error } = useFetch<Account>(`/account/${session?.user.email}`);
+  const { user } = useAuth();
 
   return (
     <>
-      {session && (
+      <h1>Welcome!</h1>
+      {user && (
         <>
-          <h1>Welcome!</h1>
-          <h1>Email: {session?.user.email}</h1>
+          <h3>Identifier: {user.identifier}</h3>
+          {user.account && (
+            <>
+              <h3>Name: {user.name}</h3>
+              <h3>Account balance: {user.account.balance}</h3>
+            </>
+          )}
+          {!user.account && <CreateAccount />}
         </>
       )}
-      {session && data && (
-        <>
-          <h1>Name: {data?.name}</h1>
-          <h1>Account amount: {data?.amount}</h1>
-        </>
-      )}
-      {session && error && <CreateAccount email={session?.user.email} />}
     </>
   );
 };

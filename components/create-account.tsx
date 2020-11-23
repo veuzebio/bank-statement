@@ -2,19 +2,15 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 
 import api from '../utils/api';
+import { useAuth } from '../utils/contexts/auth-context';
 
-const CreateAccount: NextPage<{ email: string }> = ({ email }) => {
+const CreateAccount: NextPage = () => {
+  const { user } = useAuth();
   const [name, setName] = useState('');
-  const [initialAmount, setInitialAmount] = useState('');
+  const [openingBalance, setOpeningBalance] = useState('');
 
-  function handleCreateAccount() {
-    const newAccount = {
-      name,
-      email,
-      initialAmount,
-    };
-    console.log(newAccount);
-    api.post('/account', newAccount);
+  async function openUserAccount() {
+    await api.put(`/user/${user.identifier}`, { name, openingBalance });
   }
 
   return (
@@ -27,11 +23,11 @@ const CreateAccount: NextPage<{ email: string }> = ({ email }) => {
       />
       <input
         type="text"
-        placeholder="Enter an optional amount value"
-        value={initialAmount}
-        onChange={(e) => setInitialAmount(e.target.value)}
+        placeholder="Enter an optional opening balance value"
+        value={openingBalance}
+        onChange={(e) => setOpeningBalance(e.target.value)}
       />
-      <button type="button" onClick={handleCreateAccount}>
+      <button type="button" onClick={openUserAccount}>
         Create New Account
       </button>
     </>

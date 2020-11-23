@@ -17,7 +17,7 @@ const TransactionForm: NextPage = () => {
         onChange={(e) => setInputValue(e.target.value)}
       />
       <button type="button" onClick={setAmountValue}>
-        Deposit
+        {Number(inputValue) >= 0 ? 'Deposit' : 'Withdraw'}
       </button>
       <h1>{totalAmount}</h1>
     </>

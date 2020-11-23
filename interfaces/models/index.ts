@@ -1,3 +1,2 @@
-export * from './CreateAccountPayload';
-
 export * from './Account';
+export * from './User';

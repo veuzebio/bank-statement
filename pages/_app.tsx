@@ -1,14 +1,14 @@
 import { AppProps } from 'next/app';
-import { Provider } from 'next-auth/client';
 
 import Nav from '../components/nav';
+import { AuthProvider } from '../utils/contexts/auth-context';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <Provider session={pageProps.session}>
+    <AuthProvider>
       <Nav />
       <Component {...pageProps} />
-    </Provider>
+    </AuthProvider>
   );
 }
 

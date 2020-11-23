@@ -1,23 +1,17 @@
 import { NextPage } from 'next';
-import { signIn, signOut, useSession } from 'next-auth/client';
+
+import { useAuth } from '../utils/contexts/auth-context';
 
 const SignIn: NextPage = () => {
-  const [session, loading] = useSession();
+  const { user, signed, signOut } = useAuth();
+
   return (
     <>
-      {loading && <p>Loading...</p>}
-      {!session && (
+      {!signed && <div>Not signed in :(</div>}
+      {signed && (
         <div>
-          Not signed in
-          <button onClick={(): Promise<void> => signIn('auth0')}>
-            Sign in
-          </button>
-        </div>
-      )}
-      {session && (
-        <div>
-          Signed in as {session.user.email}
-          <button onClick={(): Promise<void> => signOut()}>Sign out</button>
+          Signed in as {user.name}
+          <button onClick={signOut}>Sign out</button>
         </div>
       )}
     </>
