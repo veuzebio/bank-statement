@@ -15,7 +15,7 @@ export async function createUser(identifier: string): Promise<WithId<User>> {
   return response.ops[0];
 }
 
-export async function findUserByIdentifier(identifier: string): Promise<User> {
+export async function getUserByIdentifier(identifier: string): Promise<User> {
   const { db } = await connect();
 
   const response = await db

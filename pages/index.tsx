@@ -5,7 +5,8 @@ import { useAuth } from '../utils/contexts/auth-context';
 
 const Home: NextPage = () => {
   const [identifier, setIdentifier] = useState('');
-  const { signed, loading, signIn } = useAuth();
+  const [errorMessage, setErrorMessage] = useState('');
+  const { loading, signIn } = useAuth();
   const router = useRouter();
 
   const verifyUserAccount = async (
@@ -13,8 +14,16 @@ const Home: NextPage = () => {
   ): Promise<void> => {
     event.preventDefault();
 
-    await signIn(identifier).then(() => router.push('/account'));
+    await signIn(identifier)
+      .then(() => router.push(`/account/${identifier}`))
+      .catch((err) => setErrorMessage(err.message));
   };
+
+  function handleIdentifierValue(value: string) {
+    setIdentifier(value);
+
+    if (errorMessage.length) setErrorMessage('');
+  }
 
   return (
     <>
@@ -23,15 +32,16 @@ const Home: NextPage = () => {
         <input
           type="text"
           value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
+          onChange={(e) => handleIdentifierValue(e.target.value)}
         />
-        {loading && <p>Please wait, we are getting your information...</p>}
         {!loading && (
           <button type="button" onClick={(e) => verifyUserAccount(e)}>
             Continue
           </button>
         )}
       </form>
+      <p>{errorMessage}</p>
+      {loading && <p>Please wait, we are getting your information...</p>}
     </>
   );
 };

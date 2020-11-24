@@ -15,7 +15,6 @@ export interface AuthContextData {
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [signed, setSigned] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function signIn(identifier: string): Promise<void> {
@@ -25,11 +24,9 @@ export const AuthProvider: React.FC = ({ children }) => {
       .get<User>(`/user/${identifier}`)
       .then((res) => {
         setUser(res.data);
-        setSigned(true);
       })
-      .catch((err) => {
-        console.log('USUARIO NAO CADASTRADO', err);
-        return err;
+      .catch(() => {
+        throw new Error('User not found with given identifier.');
       })
       .finally(() => {
         setLoading(false);
@@ -38,12 +35,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   function signOut() {
     window.location.pathname = '/';
-    setSigned(false);
     setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ signed, loading, user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ signed: !!user, loading, user, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

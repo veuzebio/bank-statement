@@ -39,7 +39,7 @@ async function findUserByIdentifier(
     return;
   }
 
-  const user = await fromRepository.findUserByIdentifier(identifier as string);
+  const user = await fromRepository.getUserByIdentifier(identifier as string);
 
   if (!user) {
     res.status(404).json({

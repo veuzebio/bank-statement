@@ -1,12 +1,13 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
 
-const TransactionForm: NextPage = () => {
-  const [totalAmount, setTotalAmount] = useState(0);
+import api from '../utils/api';
+
+const TransactionForm: NextPage<{ identifier: string }> = ({ identifier }) => {
   const [inputValue, setInputValue] = useState('');
 
-  function setAmountValue() {
-    setTotalAmount(totalAmount + Number(inputValue));
+  async function submitTransaction() {
+    await api.post(`transaction/${identifier}`, { value: inputValue });
   }
 
   return (
@@ -16,10 +17,9 @@ const TransactionForm: NextPage = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <button type="button" onClick={setAmountValue}>
+      <button type="button" onClick={() => submitTransaction()}>
         {Number(inputValue) >= 0 ? 'Deposit' : 'Withdraw'}
       </button>
-      <h1>{totalAmount}</h1>
     </>
   );
 };
