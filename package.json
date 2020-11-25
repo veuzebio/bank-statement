@@ -18,12 +18,15 @@
   },
   "homepage": "https://github.com/veuzebio/bank-statement#readme",
   "dependencies": {
+    "autoprefixer": "^10.0.2",
     "axios": "^0.21.0",
     "mongodb": "^3.6.3",
     "next": "^10.0.1",
+    "postcss": "^8.1.10",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "swr": "^0.3.9"
+    "swr": "^0.3.9",
+    "tailwindcss": "^2.0.1"
   },
   "devDependencies": {
     "@types/mongodb": "^3.5.33",
