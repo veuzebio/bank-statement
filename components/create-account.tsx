@@ -2,13 +2,15 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 
 import api from '../utils/api';
+import { useAuthContext } from '../utils/contexts/auth-context';
 
-const CreateAccount: NextPage<{ identifier: string }> = ({ identifier }) => {
+const CreateAccount: NextPage = () => {
+  const { id } = useAuthContext();
   const [name, setName] = useState('');
   const [openingBalance, setOpeningBalance] = useState('');
 
   async function openUserAccount() {
-    await api.put(`/user/${identifier}`, { name, openingBalance });
+    await api.put(`/user/${id}`, { name, openingBalance });
   }
 
   return (

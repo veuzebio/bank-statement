@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { createContext, useContext, useState } from 'react';
 
-import { User } from '../../interfaces/models';
 import api from '../api';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -8,46 +8,42 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export interface AuthContextData {
   signed: boolean;
   loading: boolean;
-  user: any;
+  id: string;
   signIn(identifier: string): Promise<void>;
   signOut(): void;
 }
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [id, setId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function signIn(identifier: string): Promise<void> {
     setLoading(true);
 
-    await api
-      .get<User>(`/user/${identifier}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch(() => {
-        throw new Error('User not found with given identifier.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const { data } = await api.post<string>(`/auth`, { identifier });
+
+    if (!data) throw new Error('User not found with given identifier.');
+
+    setId(data);
+    setLoading(false);
   }
 
   function signOut() {
-    window.location.pathname = '/';
-    setUser(null);
+    router.replace('/');
+    setId(null);
   }
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, loading, user, signIn, signOut }}
+      value={{ signed: !!id, loading, id, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export function useAuth(): AuthContextData {
+export function useAuthContext(): AuthContextData {
   const context = useContext(AuthContext);
 
   return context;

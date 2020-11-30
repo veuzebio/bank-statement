@@ -9,7 +9,7 @@ export default async (
 ): Promise<void> => {
   switch (req.method) {
     case 'GET':
-      await findUserByIdentifier(req, res);
+      await findUserById(req, res);
       break;
 
     case 'PUT':
@@ -23,23 +23,23 @@ export default async (
   }
 };
 
-async function findUserByIdentifier(
+async function findUserById(
   req: NextApiRequest,
   res: NextApiResponse<User | { error: string }>
 ): Promise<void> {
   const {
-    query: { identifier },
+    query: { id },
   } = req;
 
-  if (!identifier) {
+  if (!id) {
     res.status(400).json({
-      error: `Missing IDENTIFIER param`,
+      error: `Missing ID param`,
     });
 
     return;
   }
 
-  const user = await fromRepository.getUserByIdentifier(identifier as string);
+  const user = await fromRepository.getUserById(id as string);
 
   if (!user) {
     res.status(404).json({

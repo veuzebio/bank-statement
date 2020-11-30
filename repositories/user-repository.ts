@@ -1,4 +1,4 @@
-import { WithId } from 'mongodb';
+import { ObjectId, WithId } from 'mongodb';
 
 import connect from '../utils/database';
 import { User } from '../interfaces/models';
@@ -15,11 +15,23 @@ export async function createUser(identifier: string): Promise<WithId<User>> {
   return response.ops[0];
 }
 
-export async function getUserByIdentifier(identifier: string): Promise<User> {
+export async function getUserById(id: string): Promise<WithId<User>> {
   const { db } = await connect();
 
   const response = await db
-    .collection<User>(USER_COLLECTION)
+    .collection<WithId<User>>(USER_COLLECTION)
+    .findOne({ _id: new ObjectId(id) });
+
+  return response;
+}
+
+export async function getUserByIdentifier(
+  identifier: string
+): Promise<WithId<User>> {
+  const { db } = await connect();
+
+  const response = await db
+    .collection<WithId<User>>(USER_COLLECTION)
     .findOne({ identifier: identifier });
 
   return response;
