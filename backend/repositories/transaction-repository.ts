@@ -1,7 +1,7 @@
 import { WithId } from 'mongodb';
 
 import connect from '../utils/database';
-import { Transaction } from '../interfaces/models';
+import { Transaction } from '../../interfaces/models';
 
 const TRANSACTION_COLLECTION = 'transactions';
 

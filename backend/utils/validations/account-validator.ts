@@ -1,4 +1,4 @@
-import { CreateAccountPayload } from '../../interfaces/models';
+import { CreateAccountPayload } from '../../../interfaces/models';
 
 interface ValidateResponse {
   isValid: boolean;

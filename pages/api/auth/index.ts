@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import * as fromRepository from '../../../repositories/user-repository';
+import * as fromRepository from '../../../backend/repositories/user-repository';
 
 export default async (
   req: NextApiRequest,

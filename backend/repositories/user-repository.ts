@@ -1,7 +1,7 @@
 import { ObjectId, WithId } from 'mongodb';
 
 import connect from '../utils/database';
-import { User } from '../interfaces/models';
+import { User } from '../../interfaces/models';
 
 const USER_COLLECTION = 'users';
 

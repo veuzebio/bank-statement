@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import * as fromRepository from '../../../repositories/user-repository';
-import * as fromValidator from '../../../utils/validations/user-validator';
+import * as fromRepository from '../../../backend/repositories/user-repository';
+import * as fromValidator from '../../../backend/utils/validations/user-validator';
 import { User } from '../../../interfaces/models';
 
 export default async (

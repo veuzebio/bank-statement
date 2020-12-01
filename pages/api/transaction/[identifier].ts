@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Transaction } from '../../../interfaces/models/Transaction';
 
-import * as fromRepository from '../../../repositories/transaction-repository';
+import * as fromRepository from '../../../backend/repositories/transaction-repository';
 
 export default async (
   req: NextApiRequest,
