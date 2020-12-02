@@ -15,12 +15,33 @@ export default async (
       await findBankAccount(req, res);
       break;
 
+    case 'PUT':
+      await makeTransaction(req, res);
+      break;
+
     default:
-      res.setHeader('Allow', ['DELETE', 'GET']);
+      res.setHeader('Allow', ['DELETE', 'GET', 'PUT']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
       break;
   }
 };
+
+async function makeTransaction(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
+  const {
+    query: { id },
+  } = req;
+
+  const { value } = req.body;
+
+  const bankAccount = await service.makeTransaction(id as string, value);
+
+  res
+    .status(200)
+    .json({ state: bankAccount.state, events: bankAccount.events });
+}
 
 async function deactivateBankAccount(
   req: NextApiRequest,

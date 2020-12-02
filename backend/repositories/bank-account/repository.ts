@@ -1,6 +1,6 @@
 import { ObjectId, WithId } from 'mongodb';
 
-import { BankAccount } from '../../domains/bank-account/entity';
+import { BankAccount } from '../../domains/bank-account/BankAccount';
 import connect from '../../utils/database';
 
 const COLLECTION = 'accounts';

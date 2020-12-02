@@ -1,5 +1,5 @@
 import BaseEvent from '../../BaseEvent';
-import { BankAccount } from '../entity';
+import { BankAccount } from '../BankAccount';
 
 export interface BankAccountDeactivationParams {
   deactivatedAt: Date;

@@ -1,4 +1,4 @@
-import { BankAccount } from '../../domains/bank-account/entity';
+import { BankAccount } from '../../domains/bank-account/BankAccount';
 import { BankAccountCreationParams } from '../../domains/bank-account/events';
 import * as repository from '../../repositories/bank-account/repository';
 
@@ -27,6 +27,19 @@ async function deactivate(id: string): Promise<BankAccount> {
   return account;
 }
 
+async function makeTransaction(
+  id: string,
+  value: number
+): Promise<BankAccount> {
+  const account = await find(id);
+
+  if (value > 0) account.deposit(value);
+
+  repository.save(account);
+
+  return account;
+}
+
 async function find(id: string): Promise<BankAccount> {
   const account = await repository.findById(id);
 
@@ -39,4 +52,4 @@ function generateAccountNumber() {
   return (Math.floor(Math.random() * 90000) + 10000).toString();
 }
 
-export { create, deactivate, find };
+export { create, deactivate, find, makeTransaction };

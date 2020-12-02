@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import BaseEvent from '../../BaseEvent';
-import { BankAccount } from '../entity';
+import { BankAccount } from '../BankAccount';
 
 export interface BankAccountCreationParams {
   id: ObjectId;
