@@ -34,6 +34,7 @@ async function makeTransaction(
   const account = await find(id);
 
   if (value > 0) account.deposit(value);
+  if (value < 0) account.withdraw(value);
 
   repository.save(account);
 

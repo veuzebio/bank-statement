@@ -7,6 +7,7 @@ import {
   BankAccountCreationParams,
   BankAccountDeactivatedEvent,
   DepositMadeEvent,
+  WithdrawalMadeEvent,
 } from './events';
 
 export class BankAccount extends BaseEntity<BankAccount> {
@@ -23,6 +24,7 @@ export class BankAccount extends BaseEntity<BankAccount> {
       [BankAccountDeactivatedEvent.eventName]:
         BankAccountDeactivatedEvent.commit,
       [DepositMadeEvent.eventName]: DepositMadeEvent.commit,
+      [WithdrawalMadeEvent.eventName]: WithdrawalMadeEvent.commit,
     });
   }
 
@@ -67,6 +69,14 @@ export class BankAccount extends BaseEntity<BankAccount> {
 
   deposit(value: number): BankAccount {
     this.pushNewEvents([new DepositMadeEvent({ value, madeAt: new Date() })]);
+
+    return this;
+  }
+
+  withdraw(value: number): BankAccount {
+    this.pushNewEvents([
+      new WithdrawalMadeEvent({ value, madeAt: new Date() }),
+    ]);
 
     return this;
   }
