@@ -6,36 +6,32 @@ import Button from '../../../frontend/components/button';
 import Grid from '../../../frontend/components/grid';
 import Loading from '../../../frontend/components/loading';
 import api from '../../../frontend/utils/api';
+import { useAccountContext } from '../../../frontend/utils/contexts/account';
 
 const ViewAccountPage: NextPage = () => {
-  const [account, setAccount] = useState(null);
+  const [view, setView] = useState(null);
+  const { account, storeAccount } = useAccountContext();
   const router = useRouter();
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('account'));
-
-    if (!data) {
+    if (!account) {
       router.replace('/account');
       return;
     }
 
-    setAccount({
-      id: data._id,
-      identifier: data.userIdentifier,
-      name: data.userName,
-      birth: data.userBirthDate,
-      creation: data.createdAt,
-      deactivation: data.deactivatedAt,
-      balance: data.balance,
-    });
+    setView(mapToView(account));
   }, []);
 
-  async function handleClick() {
-    const { data } = await api.delete(`/bank-account/${account.id}`);
+  async function deactivateAccount() {
+    const { data } = await api.delete(`/bank-account/${view.id}`);
 
-    localStorage.setItem('account', JSON.stringify(data));
+    storeAccount(data);
 
-    setAccount({
+    setView(mapToView(data));
+  }
+
+  function mapToView(data: any) {
+    return {
       id: data._id,
       identifier: data.userIdentifier,
       name: data.userName,
@@ -43,18 +39,18 @@ const ViewAccountPage: NextPage = () => {
       creation: data.createdAt,
       deactivation: data.deactivatedAt,
       balance: data.balance,
-    });
+    };
   }
 
-  if (!account) return <Loading></Loading>;
+  if (!view) return <Loading></Loading>;
 
   return (
     <>
-      <Grid title="Personal Information" data={account}></Grid>
+      <Grid title="Personal Information" data={view}></Grid>
       <Button
         label="Deactivate Account"
-        buttonClick={handleClick}
-        disabled={!!account.deactivatedAt}
+        buttonClick={deactivateAccount}
+        disabled={!!view.deactivatedAt}
       ></Button>
     </>
   );

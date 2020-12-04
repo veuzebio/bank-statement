@@ -5,18 +5,19 @@ import { useState } from 'react';
 import Button from '../../frontend/components/button';
 import InputText from '../../frontend/components/input-text';
 import api from '../../frontend/utils/api';
+import { useAccountContext } from '../../frontend/utils/contexts/account';
 
 const AccountPage: NextPage = () => {
   const [name, setName] = useState('');
   const [identifier, setIdentifier] = useState('');
+  const { storeAccount } = useAccountContext();
   const router = useRouter();
 
   async function handleClick() {
     const user = { name, identifier, birthDate: new Date('1990-10-10') };
-
     const { data } = await api.post('/bank-account', { user });
 
-    localStorage.setItem('account', JSON.stringify(data));
+    storeAccount(data);
 
     router.push(`/account/view`);
   }

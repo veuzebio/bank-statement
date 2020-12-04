@@ -7,12 +7,21 @@ import List, { ListItem } from '../../frontend/components/list';
 import Loading from '../../frontend/components/loading';
 import Title from '../../frontend/components/title';
 import api from '../../frontend/utils/api';
+import { useAccountContext } from '../../frontend/utils/contexts/account';
 
 const TransactionPage: NextPage = () => {
+  const { account, storeAccount } = useAccountContext();
   const [inputValue, setInputValue] = useState('');
-  const [account, setAccount] = useState(() =>
-    JSON.parse(localStorage.getItem('account'))
-  );
+  // const [transactions, setTransactions] = useState(account?.transactions || []);
+
+  async function makeTransaction() {
+    const { data } = await api.put(`/bank-account/${account._id}`, {
+      value: Number(inputValue),
+    });
+
+    storeAccount(data);
+    // setTransactions(data.transactions);
+  }
 
   function mapToListItem(data: any[]): ListItem[] {
     function formatDateTime(timestamp: string): string {
@@ -36,16 +45,6 @@ const TransactionPage: NextPage = () => {
     });
   }
 
-  async function handleClick() {
-    const { data } = await api.put(`/bank-account/${account._id}`, {
-      value: Number(inputValue),
-    });
-
-    setAccount(data);
-
-    localStorage.setItem('account', JSON.stringify(data));
-  }
-
   if (!account) return <Loading></Loading>;
 
   return (
@@ -59,7 +58,7 @@ const TransactionPage: NextPage = () => {
         ></InputText>
         <Button
           label={Number(inputValue) < 0 ? 'Withdraw' : 'Deposit'}
-          buttonClick={handleClick}
+          buttonClick={makeTransaction}
           disabled={
             !inputValue.length ||
             !Number(inputValue) ||
