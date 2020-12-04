@@ -24,7 +24,5 @@ async function createBankAccount(
 ): Promise<void> {
   const bankAccount = await service.create(req.body);
 
-  res
-    .status(200)
-    .json({ state: bankAccount.state, events: bankAccount.events });
+  res.status(200).json(bankAccount.state);
 }

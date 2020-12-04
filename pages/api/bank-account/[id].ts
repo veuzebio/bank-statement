@@ -38,9 +38,7 @@ async function makeTransaction(
 
   const bankAccount = await service.makeTransaction(id as string, value);
 
-  res
-    .status(200)
-    .json({ state: bankAccount.state, events: bankAccount.events });
+  res.status(200).json(bankAccount.state);
 }
 
 async function deactivateBankAccount(
@@ -53,9 +51,7 @@ async function deactivateBankAccount(
 
   const bankAccount = await service.deactivate(id as string);
 
-  res
-    .status(200)
-    .json({ state: bankAccount.state, events: bankAccount.events });
+  res.status(200).json(bankAccount.state);
 }
 
 async function findBankAccount(
@@ -68,7 +64,5 @@ async function findBankAccount(
 
   const bankAccount = await service.find(id as string);
 
-  res
-    .status(200)
-    .json({ state: bankAccount.state, events: bankAccount.events });
+  res.status(200).json(bankAccount.state);
 }

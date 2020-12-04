@@ -1,22 +1,37 @@
 import '../styles/main.css';
 import { AppProps } from 'next/app';
 
-import Nav from '../components/nav';
-import { AuthProvider } from '../utils/contexts/auth-context';
-import { UserProvider } from '../utils/contexts/user-context';
+import Nav from '../frontend/components/nav';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <div className="relative bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <AuthProvider>
-          <UserProvider>
-            <Nav />
-            <Component {...pageProps} />
-          </UserProvider>
-        </AuthProvider>
+    <>
+      <link
+        rel="stylesheet"
+        href="https://pagecdn.io/lib/font-awesome/5.10.0-11/css/all.min.css"
+        integrity="sha256-p9TTWD+813MlLaxMXMbTA7wN/ArzGyW/L7c5+KkjOkM="
+        crossOrigin="anonymous"
+      />
+      <div className="relative bg-gray-50 min-h-screen">
+        <Nav
+          links={[
+            { name: 'Create Account', address: '/account' },
+            {
+              name: 'View Account',
+              address: '/account/view',
+            },
+            {
+              name: 'Account History',
+              address: '/account/history',
+            },
+            { name: 'Transaction', address: '/transaction' },
+          ]}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <Component {...pageProps} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

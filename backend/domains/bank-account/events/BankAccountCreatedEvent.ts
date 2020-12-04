@@ -10,6 +10,7 @@ export interface BankAccountCreationParams {
   user: {
     identifier: string;
     name: string;
+    birthDate: Date;
   };
 }
 
@@ -30,6 +31,7 @@ export class BankAccountCreatedEvent extends BaseEvent<
     state.number = event.data.number;
     state.userName = event.data.user.name;
     state.userIdentifier = event.data.user.identifier;
+    state.userBirthDate = event.data.user.birthDate;
     state.createdAt = event.data.createdAt;
 
     return state;

@@ -14,6 +14,7 @@ export class BankAccount extends BaseEntity<BankAccount> {
   number: string | null = null;
   userIdentifier: string | null = null;
   userName: string | null = null;
+  userBirthDate: Date | null = null;
   createdAt: Date | null = null;
   deactivatedAt: Date | null = null;
   transactions: Transaction[] = [];
@@ -38,6 +39,7 @@ export class BankAccount extends BaseEntity<BankAccount> {
       _id: currentState._id,
       userIdentifier: currentState.userIdentifier,
       userName: currentState.userName,
+      userBirthDate: currentState.userBirthDate,
       createdAt: currentState.createdAt,
       deactivatedAt: currentState.deactivatedAt,
       transactions: currentState.transactions,

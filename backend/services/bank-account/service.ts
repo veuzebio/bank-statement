@@ -33,6 +33,8 @@ async function makeTransaction(
 ): Promise<BankAccount> {
   const account = await find(id);
 
+  console.log('service', account);
+
   if (value > 0) account.deposit(value);
   if (value < 0) account.withdraw(value);
 
