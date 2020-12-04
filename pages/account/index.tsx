@@ -13,9 +13,12 @@ const AccountPage: NextPage = () => {
   const { storeAccount } = useAccountContext();
   const router = useRouter();
 
-  async function handleClick() {
-    const user = { name, identifier, birthDate: new Date('1990-10-10') };
-    const account = await service.create(user);
+  async function createNewAccount() {
+    const account = await service.create({
+      name,
+      identifier,
+      birthDate: new Date('1990-10-10'),
+    });
 
     storeAccount(account);
 
@@ -39,7 +42,7 @@ const AccountPage: NextPage = () => {
         ></InputText>
         <Button
           label="Create Account"
-          buttonClick={handleClick}
+          buttonClick={createNewAccount}
           disabled={!name.length || !identifier.length}
         ></Button>
       </div>

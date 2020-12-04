@@ -7,7 +7,9 @@ import List, { ListItem } from '../../frontend/components/list';
 import Loading from '../../frontend/components/loading';
 import Title from '../../frontend/components/title';
 import { useAccountContext } from '../../frontend/utils/contexts/account';
+import { Transaction } from '../../frontend/models';
 import * as service from '../../frontend/services/account';
+import * as dateFormatter from '../../frontend/utils/formatters/datetime';
 
 const TransactionPage: NextPage = () => {
   const { account, storeAccount } = useAccountContext();
@@ -19,29 +21,20 @@ const TransactionPage: NextPage = () => {
     storeAccount(data);
   }
 
-  function mapToListItem(data: any[]): ListItem[] {
-    function formatDateTime(timestamp: string): string {
-      const datetime = new Date(timestamp);
-      return (
-        datetime.getDate() +
-        '/' +
-        (datetime.getMonth() + 1) +
-        '/' +
-        datetime.getFullYear()
-      );
-    }
-
-    return data.map((item, index) => {
+  function mapToListItem(data: Transaction[]): ListItem[] {
+    return data.map((item) => {
       return {
-        key: index,
+        key: item.madeAt.toString(),
         title: item.value < 0 ? 'Withdrawal' : 'Deposit',
-        description: formatDateTime(item.madeAt),
+        description: dateFormatter.format(item.madeAt),
         observation: `$ ${item.value}`,
       };
     });
   }
 
   if (!account) return <Loading></Loading>;
+  if (!!account.deactivatedAt)
+    return <Title>Sorry, your account has been deactivated!</Title>;
 
   return (
     <div className="flex items-center justify-center">

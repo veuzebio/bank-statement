@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from '../../../frontend/components/button';
 
@@ -11,14 +10,8 @@ import * as service from '../../../frontend/services/account';
 const ViewAccountPage: NextPage = () => {
   const [view, setView] = useState(null);
   const { account, storeAccount } = useAccountContext();
-  const router = useRouter();
 
   useEffect(() => {
-    if (!account) {
-      router.replace('/account');
-      return;
-    }
-
     setView(mapToView(account));
   }, []);
 
@@ -50,7 +43,7 @@ const ViewAccountPage: NextPage = () => {
       <Button
         label="Deactivate Account"
         buttonClick={deactivateAccount}
-        disabled={!!view.deactivatedAt}
+        disabled={!!account.deactivatedAt}
       ></Button>
     </>
   );

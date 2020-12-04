@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 
-interface TimelineEvent {
+export interface TimelineEvent {
   id: string;
   name: string;
   date: Date | string;
