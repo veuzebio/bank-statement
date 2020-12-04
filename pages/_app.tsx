@@ -17,16 +17,19 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <AccountProvider>
           <Nav
             links={[
+              { name: 'Home', address: '/' },
               { name: 'Create Account', address: '/account' },
               {
                 name: 'View Account',
                 address: '/account/view',
+                validAuth: true,
               },
               {
                 name: 'Account History',
                 address: '/account/history',
+                validAuth: true,
               },
-              { name: 'Transaction', address: '/transaction' },
+              { name: 'Transaction', address: '/transaction', validAuth: true },
             ]}
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6">

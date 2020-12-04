@@ -1,10 +1,12 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
 import Loading from '../../../frontend/components/loading';
 import Timeline from '../../../frontend/components/timeline';
-import api from '../../../frontend/utils/api';
 import { useAccountContext } from '../../../frontend/utils/contexts/account';
+import * as service from '../../../frontend/services/account';
+import { DataEvent } from '../../../frontend/models';
 
 const AccountHistoryPage: NextPage = () => {
   const [events, setEvents] = useState<any[]>(null);
@@ -18,16 +20,16 @@ const AccountHistoryPage: NextPage = () => {
     }
 
     async function fetchEvents(accountId) {
-      const { data } = await api.get<any[]>(`bank-account/events/${accountId}`);
+      const events = await service.getEventList(accountId);
 
-      setEvents(mapToTimelineEvent(data));
+      setEvents(mapToTimelineEvent(events));
     }
 
     fetchEvents(account._id);
   }, []);
 
-  function mapToTimelineEvent(data: any[]) {
-    function formatDateTime(timestamp: string): string {
+  function mapToTimelineEvent(data: DataEvent[]) {
+    function formatDateTime(timestamp: string | Date): string {
       const datetime = new Date(timestamp);
       return (
         datetime.getDate() +

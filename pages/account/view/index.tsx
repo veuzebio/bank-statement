@@ -5,8 +5,8 @@ import Button from '../../../frontend/components/button';
 
 import Grid from '../../../frontend/components/grid';
 import Loading from '../../../frontend/components/loading';
-import api from '../../../frontend/utils/api';
 import { useAccountContext } from '../../../frontend/utils/contexts/account';
+import * as service from '../../../frontend/services/account';
 
 const ViewAccountPage: NextPage = () => {
   const [view, setView] = useState(null);
@@ -23,7 +23,7 @@ const ViewAccountPage: NextPage = () => {
   }, []);
 
   async function deactivateAccount() {
-    const { data } = await api.delete(`/bank-account/${view.id}`);
+    const data = await service.deactivate(view.id);
 
     storeAccount(data);
 

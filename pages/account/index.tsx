@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import Button from '../../frontend/components/button';
 import InputText from '../../frontend/components/input-text';
-import api from '../../frontend/utils/api';
 import { useAccountContext } from '../../frontend/utils/contexts/account';
+import * as service from '../../frontend/services/account';
 
 const AccountPage: NextPage = () => {
   const [name, setName] = useState('');
@@ -15,9 +15,9 @@ const AccountPage: NextPage = () => {
 
   async function handleClick() {
     const user = { name, identifier, birthDate: new Date('1990-10-10') };
-    const { data } = await api.post('/bank-account', { user });
+    const account = await service.create(user);
 
-    storeAccount(data);
+    storeAccount(account);
 
     router.push(`/account/view`);
   }
