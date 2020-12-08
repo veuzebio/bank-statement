@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
+
 import { useAccountContext } from '../utils/contexts/account';
 
 interface NavProps {

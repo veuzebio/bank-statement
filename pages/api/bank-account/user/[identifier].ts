@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import * as service from '../../../backend/services/bank-account/service';
+import * as service from '../../../../backend/services/bank-account/service';
 
 export default async (
   req: NextApiRequest,
@@ -8,12 +8,12 @@ export default async (
 ): Promise<void> => {
   try {
     switch (req.method) {
-      case 'POST':
-        await createBankAccount(req, res);
+      case 'GET':
+        await findBankAccount(req, res);
         break;
 
       default:
-        res.setHeader('Allow', ['POST']);
+        res.setHeader('Allow', ['GET']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
         break;
     }
@@ -23,11 +23,15 @@ export default async (
   }
 };
 
-async function createBankAccount(
+async function findBankAccount(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const bankAccount = await service.create(req.body);
+  const {
+    query: { identifier },
+  } = req;
+
+  const bankAccount = await service.findByIdentifier(identifier as string);
 
   res.status(200).json(bankAccount.state);
 }

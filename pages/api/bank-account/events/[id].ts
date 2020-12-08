@@ -26,7 +26,7 @@ async function findBankAccountEvents(
     query: { id },
   } = req;
 
-  const bankAccount = await service.find(id as string);
+  const bankAccount = await service.findById(id as string);
 
   res.status(200).json(bankAccount.events);
 }

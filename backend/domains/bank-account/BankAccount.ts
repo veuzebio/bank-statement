@@ -29,6 +29,10 @@ export class BankAccount extends BaseEntity<BankAccount> {
     });
   }
 
+  get isDeactvated(): boolean {
+    return !!this.deactivatedAt;
+  }
+
   get state(): any {
     const currentState = this.reducer.reduce(new BankAccount(), [
       ...this.persistedEvents,

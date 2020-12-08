@@ -13,6 +13,10 @@ function deactivate(accountId: string): Promise<BankAccount> {
   return api.del<BankAccount>(`/bank-account/${accountId}`);
 }
 
+function getByIdentifier(userIdentifier: string): Promise<BankAccount> {
+  return api.get<BankAccount>(`/bank-account/user/${userIdentifier}`);
+}
+
 function makeTransaction(
   accountId: string,
   value: number
@@ -20,4 +24,4 @@ function makeTransaction(
   return api.put<BankAccount>(`/bank-account/${accountId}`, { value });
 }
 
-export { create, getEventList, deactivate, makeTransaction };
+export { create, getEventList, deactivate, makeTransaction, getByIdentifier };

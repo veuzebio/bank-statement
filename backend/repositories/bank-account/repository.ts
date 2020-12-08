@@ -48,6 +48,18 @@ async function findById(id: string | ObjectId): Promise<BankAccount> {
   return new BankAccount().setPersistedEvents(document.events);
 }
 
+async function findByIdentifier(identifier: string): Promise<BankAccount> {
+  const { db } = await connect();
+
+  const document = await db
+    .collection<BankAccount>(COLLECTION)
+    .findOne({ 'state.userIdentifier': identifier });
+
+  if (!document) return null;
+
+  return new BankAccount().setPersistedEvents(document.events);
+}
+
 async function getAll(): Promise<BankAccount[]> {
   const documents = await this._collection.find().toArray();
 
@@ -58,4 +70,4 @@ async function getAll(): Promise<BankAccount[]> {
   });
 }
 
-export { save, getAll, findById };
+export { save, getAll, findById, findByIdentifier };

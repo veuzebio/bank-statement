@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import Button from '../../../frontend/components/button';
 
+import Button from '../../../frontend/components/button';
 import Grid from '../../../frontend/components/grid';
 import Loading from '../../../frontend/components/loading';
 import { useAccountContext } from '../../../frontend/utils/contexts/account';
@@ -17,9 +17,7 @@ const ViewAccountPage: NextPage = () => {
 
   async function deactivateAccount() {
     const data = await service.deactivate(view.id);
-
     storeAccount(data);
-
     setView(mapToView(data));
   }
 
